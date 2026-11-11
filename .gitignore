@@ -1,0 +1,6 @@
+# Ignore Python cache files
+__pycache__/
+# Ignore virtual environments
+.venv/
+# The copied CSV is tracked by DVC, not Git
+/data/destination/sample.csv

@@ -1,0 +1,22 @@
+# DVC pipeline definition
+stages:
+  # Name of the stage (run with: dvc repro)
+  copy_csv:
+    # Command DVC executes
+    cmd: python src/copy_csv.py
+    # Inputs: if any of these change, the stage re-runs
+    deps:
+      # The script itself
+      - src/copy_csv.py
+      # The source CSV file
+      - data/source/sample.csv
+    # Parameters read from params.yaml that trigger a re-run when changed
+    params:
+      # Source file path parameter
+      - copy.source
+      # Destination file path parameter
+      - copy.destination
+    # Outputs: tracked by DVC and pushed to the remote
+    outs:
+      # The copied CSV
+      - data/destination/sample.csv

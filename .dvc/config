@@ -1,0 +1,11 @@
+# Core DVC settings
+[core]
+    # Default remote storage used by "dvc push" / "dvc pull"
+    remote = storage
+# Definition of the remote called "storage"
+['remote "storage"']
+    # Demo remote: a local folder (use an S3/GDrive/Azure URL for real projects)
+    url = /tmp/dvc-remote
+# ---- Example: S3 remote (replace the block above with this) ----
+# ['remote "storage"']
+#     url = s3://your-bucket/dvc-store

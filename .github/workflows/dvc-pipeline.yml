@@ -1,0 +1,69 @@
+# Name of the workflow shown in the GitHub "Actions" tab
+name: DVC CSV Pipeline
+
+# Define when this workflow should run
+on:
+  # Run on pushes
+  push:
+    # Only for the main branch
+    branches: [main]
+    # Only when these files change
+    paths:
+      # Source CSV changed
+      - "data/source/**"
+      # Python script changed
+      - "src/**"
+      # Pipeline definition changed
+      - "dvc.yaml"
+      # Parameters changed
+      - "params.yaml"
+  # Allows running the workflow manually from the Actions tab
+  workflow_dispatch:
+
+# List of jobs in this workflow
+jobs:
+  # Job id
+  dvc-push:
+    # Human readable job name
+    name: Copy CSV and push with DVC
+    # Machine the job runs on
+    runs-on: ubuntu-latest
+    # Steps executed in order
+    steps:
+      # Step 1: download the repository code onto the runner
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: install Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          # Python version to use
+          python-version: "3.11"
+          # Cache pip downloads to speed up later runs
+          cache: pip
+
+      # Step 3: install DVC and other dependencies
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Step 4: run the DVC pipeline (copies CSV from data/source to data/destination)
+      - name: Run DVC pipeline
+        run: dvc repro
+
+      # Step 5: upload the DVC-tracked output to the configured DVC remote
+      - name: Push data to DVC remote
+        run: dvc push
+        # Only needed for a cloud remote (S3 example). Uncomment together with the S3 remote in .dvc/config
+        # env:
+        #   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        #   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Step 6: keep a copy of the result on GitHub so you can download and verify it
+      - name: Upload destination CSV as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          # Name of the artifact
+          name: destination-csv
+          # File(s) to upload
+          path: data/destination/sample.csv

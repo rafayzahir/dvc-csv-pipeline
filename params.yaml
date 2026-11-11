@@ -1,0 +1,6 @@
+# Parameters used by src/copy_csv.py
+copy:
+  # Where the CSV is read from
+  source: data/source/sample.csv
+  # Where the CSV is copied to
+  destination: data/destination/sample.csv

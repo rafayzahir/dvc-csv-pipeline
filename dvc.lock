@@ -1,0 +1,22 @@
+schema: '2.0'
+stages:
+  copy_csv:
+    cmd: python src/copy_csv.py
+    deps:
+    - path: data/source/sample.csv
+      hash: md5
+      md5: ad9e34649719140b69b8aa96bbb0d6f4
+      size: 44
+    - path: src/copy_csv.py
+      hash: md5
+      md5: a693f4cab82e962a62b16e5bf59c413c
+      size: 1200
+    params:
+      params.yaml:
+        copy.destination: data/destination/sample.csv
+        copy.source: data/source/sample.csv
+    outs:
+    - path: data/destination/sample.csv
+      hash: md5
+      md5: ad9e34649719140b69b8aa96bbb0d6f4
+      size: 44

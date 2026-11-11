@@ -1,0 +1,3 @@
+# Files/folders listed here are ignored by DVC (works like .gitignore)
+# Ignore Python cache folders
+__pycache__/

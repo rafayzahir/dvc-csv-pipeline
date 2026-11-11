@@ -1,0 +1,4 @@
+# DVC for data versioning and pipelines
+dvc>=3.0
+# PyYAML to read params.yaml
+pyyaml>=6.0
